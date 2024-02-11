@@ -17,4 +17,5 @@ class TaskCreateResponse(TaskCreate):
     id: int
 
     class Config:
+        # ORMからDBモデルのオブジェクトを受け取り、レスポンススキーマに暗黙的に変換する
         orm_mode = True
