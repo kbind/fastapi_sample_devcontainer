@@ -25,3 +25,17 @@ def get_tasks_with_done(db: Session) -> list[tuple[int, str, bool]]:
     )
     # ここでDBレコード取得
     return result.all()
+
+def get_task(db: Session, task_id: int) -> task_model.Task | None:
+    # selectの結果が一つでもタプルで返却される
+    result: Result = db.execute(
+        select(task_model.Task).filter(task_model.Task.id == task_id)
+    )
+    return result.scalars().first()
+
+def update_task(db: Session, task_create: task_schema.TaskCreate, original: task_model.Task) -> task_model.Task:
+    original.title = task_create.title
+    db.add(original)
+    db.commit()
+    db.refresh(original)
+    return original
